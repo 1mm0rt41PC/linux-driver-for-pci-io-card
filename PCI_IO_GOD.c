@@ -9,6 +9,7 @@
 #include <linux/kernel.h>
 #include <linux/types.h>
 #include <linux/kdev_t.h>
+#include <linux/delay.h>
 
 
 MODULE_AUTHOR("Immortal-PC");
@@ -36,6 +37,9 @@ static ssize_t writeDev( struct file* file, const char* buf, size_t count, loff_
 {
 	int i=0;
 	int spacePos = -1;
+	u8 val1 = 1;
+	u16 val2 = 1;
+	u32 val3 = 1;
 
 	if( !count ){
 		stdError(KERN_DEBUG, "write(): Empty write => Correct usage: echo '<id Card> <value>' > /dev/PCI_IO_GOD");
@@ -49,6 +53,16 @@ static ssize_t writeDev( struct file* file, const char* buf, size_t count, loff_
 			stdError(KERN_DEBUG, "write(): Bad write (%c) => Correct usage: echo '<id Card> <value>' > /dev/PCI_IO_GOD", buf[i]);
 			return -1;
 		}
+	}
+
+	for( i=0x1880; i<=0x18ff; i++ )
+	{
+		outb(val1, i);
+		msleep(1000);
+		outw(val2, i);
+		msleep(1000);
+		outl(val3, i);
+		msleep(1000);
 	}
 
 	stdError(KERN_DEBUG, "write() %s", buf);
