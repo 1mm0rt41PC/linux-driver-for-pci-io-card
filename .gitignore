@@ -4,3 +4,4 @@
 *.ko
 *.mod.c
 *.cmd
+*.user
