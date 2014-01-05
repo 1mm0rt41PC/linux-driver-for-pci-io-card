@@ -50,10 +50,10 @@ static int closeDev( struct inode* inode, struct file* file )
 */
 struct file_operations fops =
 {
-    .read = readDev,
-    .write = writeDev,
-    .open = openDev,
-    .release = closeDev// correspond a close
+	.read = readDev,
+	.write = writeDev,
+	.open = openDev,
+	.release = closeDev// correspond a close
 };
 
 
@@ -87,7 +87,7 @@ static int __init entryPoint(void)
 	// DEV_NAME:	Nom du périphérique qui apparaîtra dans /proc/devices
 	// fops:		Pointeur vers une structure qui contient des pointeurs de fonction.
 	// 				Ils définissent les fonctions appelées lors des appels systèmes (open, read...) du côté utilisateur.
-    if( (ret=register_chrdev(major, DEV_NAME, &fops)) < 0 ){
+	if( (ret=register_chrdev(major, DEV_NAME, &fops)) < 0 ){
 		stdError(KERN_WARNING, " Erreur avec register_chrdev=%d ", ret);
 	}
 
