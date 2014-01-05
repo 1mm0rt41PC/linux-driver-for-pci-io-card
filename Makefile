@@ -15,13 +15,13 @@ in:
 #	b      create a block (buffered) special file
 #	c, u   create a character (unbuffered) special file
 #	p      create a FIFO
-	mknod /dev/$(NAME_internal) c $(MAJOR_internal) 0
+#	mknod /dev/$(NAME_internal) c $(MAJOR_internal) 0
 
 
 out: rm
 rm:
 	rmmod PCI_IO_GOD.ko
-	rm /dev/PCI_IO_GOD
+#	rm /dev/PCI_IO_GOD
 
 sh: show
 show:

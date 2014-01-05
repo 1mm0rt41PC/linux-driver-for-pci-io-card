@@ -17,7 +17,6 @@ MODULE_SUPPORTED_DEVICE("none");
 MODULE_LICENSE("GPL");
 #define DEV_NAME "PCI_IO_GOD"
 
-static int major = 2544;// numéro majeur du driver, 0 indique que l'on souhaite une affectation dynamique
 static dev_t first; // Global variable for the first device number
 static struct cdev c_dev; // Global variable for the character device structure
 static struct class *cl; // Global variable for the device class
@@ -105,16 +104,11 @@ struct file_operations fops =
 */
 static int __init entryPoint(void)
 {
-	/*
 	int ret=0;
 	stdError(KERN_DEBUG, "---------------------------------------------------");
 	stdError(KERN_DEBUG, "Init " DEV_NAME);
 
-	// major:		Numéro majeur du driver, 0 indique que l'on souhaite une affectation dynamique.
-	// DEV_NAME:	Nom du périphérique qui apparaîtra dans /proc/devices
-	// fops:		Pointeur vers une structure qui contient des pointeurs de fonction.
-	// 				Ils définissent les fonctions appelées lors des appels systèmes (open, read...) du côté utilisateur.
-	if( (ret=register_chrdev(major, DEV_NAME, &fops)) < 0 ){
+	if( (ret=alloc_chrdev_region(&first, 0, 1, DEV_NAME)) < 0 ){
 		if( ret == -EINVAL ){
 			stdError(KERN_WARNING, "Erreur avec register_chrdev=%d => Le nombre specifie n'est pas valide (> MAX_CHRDEV)", ret);
 		}else if( ret == -EBUSY ){
@@ -122,52 +116,32 @@ static int __init entryPoint(void)
 		}else{
 			stdError(KERN_WARNING, "Erreur avec register_chrdev=%d", ret);
 		}
-		return ret;
+		return -1;
 	}
 
 	if( (cl = class_create(THIS_MODULE, DEV_NAME)) == NULL ){
-		stdError(KERN_WARNING, "class_create FAIL");
-		unregister_chrdev(major, DEV_NAME);
+		stdError(KERN_WARNING, "Erreur avec class_create=NULL");
+		unregister_chrdev_region(first, 1);
 		return -1;
 	}
 
-	if( device_create(cl, NULL, first, NULL, DEV_NAME) == NULL ){// Nom dans /dev/...
-		stdError(KERN_WARNING, "device_create FAIL");
+	if( device_create(cl, NULL, first, NULL, DEV_NAME) == NULL ){
+		stdError(KERN_WARNING, "Erreur avec device_create=NULL");
 		class_destroy(cl);
-		unregister_chrdev(major, DEV_NAME);
+		unregister_chrdev_region(first, 1);
 		return -1;
 	}
 
-	cdev_init(&c_dev, &pugs_fops);
+	cdev_init(&c_dev, &fops);
 
-	stdError(KERN_DEBUG, "Ready " DEV_NAME " Major=%d", major);
+	if( cdev_add(&c_dev, first, 1) == -1 ){
+		stdError(KERN_WARNING, "Erreur avec cdev_add=-1");
+		device_destroy(cl, first);
+		class_destroy(cl);
+		unregister_chrdev_region(first, 1);
+		return -1;
+	}
 	return 0;
-	*/
-  printk(KERN_INFO "Namaskar: ofcd registered");
-  if (alloc_chrdev_region(&first, 0, 1, "Shweta") < 0)
-  {
-    return -1;
-  }
-    if ((cl = class_create(THIS_MODULE, "chardrv")) == NULL)
-  {
-    unregister_chrdev_region(first, 1);
-    return -1;
-  }
-    if (device_create(cl, NULL, first, NULL, "mynull") == NULL)
-  {
-    class_destroy(cl);
-    unregister_chrdev_region(first, 1);
-    return -1;
-  }
-    cdev_init(&c_dev, &fops);
-    if (cdev_add(&c_dev, first, 1) == -1)
-  {
-    device_destroy(cl, first);
-    class_destroy(cl);
-    unregister_chrdev_region(first, 1);
-    return -1;
-  }
-  return 0;
 }
 
 
@@ -178,18 +152,13 @@ static int __init entryPoint(void)
 static void __exit exitPoint(void)
 {
 	stdError(KERN_DEBUG, "Trying to quit " DEV_NAME);
-/*
-	// major:		Numéro majeur du driver, 0 indique que l'on souhaite une affectation dynamique.
-	// DEV_NAME:	Nom du périphérique qui apparaîtra dans /proc/devices
-	unregister_chrdev(major, DEV_NAME);
 
-	stdError(KERN_DEBUG, "Quit " DEV_NAME);
-	*/
 	cdev_del(&c_dev);
 	device_destroy(cl, first);
 	class_destroy(cl);
 	unregister_chrdev_region(first, 1);
-	printk(KERN_INFO "Alvida: ofcd unregistered");
+
+	stdError(KERN_DEBUG, "Quit " DEV_NAME);
 }
 
 module_init(entryPoint);
