@@ -102,15 +102,11 @@ static int __init entryPoint(void)
 */
 static void __exit exitPoint(void)
 {
-	int ret =0;
 	stdError(KERN_DEBUG, "Trying to quit " DEV_NAME);
 
 	// major:		Numéro majeur du driver, 0 indique que l'on souhaite une affectation dynamique.
 	// DEV_NAME:	Nom du périphérique qui apparaîtra dans /proc/devices
 	unregister_chrdev(major, DEV_NAME);
-	if( (ret = unregister_chrdev(major, DEV_NAME)) < 0 ){
-		stdError(KERN_WARNING, " Erreur avec unregister_chrdev=%d ", ret);
-	}
 
 	stdError(KERN_DEBUG, "Quit " DEV_NAME);
 }
