@@ -30,3 +30,13 @@ show:
 test:
 	python -c 'fp=open("/dev/PCI_IO_GOD", "w"); fp.write("123 456"); fp.close();'
 	dmesg | tail
+
+
+led:
+	./led.py
+
+dr:
+	cd /home/maison/Bureau/PCI-7250-GPIO/pci-dask_427/drivers/ && ./dask_inst.pl
+
+drrm:
+	rmmod p7250
