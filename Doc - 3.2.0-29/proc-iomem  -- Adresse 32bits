@@ -1,0 +1,39 @@
+cat /proc/iomem
+================
+=> With Drivers
+
+
+00000000-0000ffff : reserved
+00010000-0009fbff : System RAM
+0009fc00-0009ffff : reserved
+000a0000-000bffff : Video RAM area
+000c0000-000c7fff : Video ROM
+000cc400-000cffff : pnp 00:0e
+000e0000-000fffff : reserved
+  000f0000-000fffff : System ROM
+00100000-1f7effff : System RAM
+  01000000-015adb63 : Kernel code
+  015adb64-0187423f : Kernel data
+  01934000-01a0cfff : Kernel bss
+1f7f0000-1f7fffff : reserved
+1f800000-1fffffff : RAM buffer
+20000000-200003ff : 0000:00:1f.1
+f0000000-f7ffffff : 0000:00:02.0
+f8000000-fbffffff : 0000:00:00.0
+fc400000-fc47ffff : 0000:00:02.0
+fc480000-fc4803ff : 0000:00:1d.7
+  fc480000-fc4803ff : ehci_hcd
+fc480400-fc4805ff : 0000:00:1f.5
+  fc480400-fc4805ff : Intel 82801DB-ICH4
+fc480600-fc4806ff : 0000:00:1f.5
+  fc480600-fc4806ff : Intel 82801DB-ICH4
+fc500000-fc7fffff : PCI Bus 0000:05
+  fc500000-fc500fff : 0000:05:08.0
+    fc500000-fc500fff : e100
+fec00000-ffffffff : reserved
+  fec00000-fec003ff : IOAPIC 0
+  feda0000-fedbffff : pnp 00:0e
+  fee00000-fee00fff : Local APIC
+    fee00000-fee00fff : pnp 00:0e
+  ffb80000-ffbfffff : pnp 00:0e
+  fff80000-ffffffff : pnp 00:0e
