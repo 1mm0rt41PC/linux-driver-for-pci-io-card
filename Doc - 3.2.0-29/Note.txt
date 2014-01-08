@@ -1,0 +1,4 @@
+Si le drivers p7250 est load.
+	=> outb non fonctionnel
+
+Sans p7250, impossible d'enable le périf

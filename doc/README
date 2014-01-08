@@ -1,0 +1,24 @@
+Linux Device Drivers
+	http://lwn.net/Kernel/LDD3/
+
+
+http://linux-documentation.com/en/man/man9/pci_bus_write_config_dword.html
+http://kerneldox.com/kdox-linux/dc/d9a/structpv__cpu__ops.html
+
+
+Tuto:
+	http://broux.developpez.com/articles/c/driver-c-linux/
+	http://dchabal.developpez.com/tutoriels/linux/xenomai/?page=page_13
+	http://runtime.bordeaux.inria.fr/goglin/teaching/ProgSyst-Lyon1/TP5/sujet.pdf
+
+
+Path:
+	/sys/bus/pci/drivers/PCI_IO_GOD/
+
+
+Perif activé ?
+	cat /sys/bus/pci/drivers/PCI_IO_GOD/0000*/enable
+
+
+Note importante !
+	pci_module_init a été remplacé par pci_register_driver

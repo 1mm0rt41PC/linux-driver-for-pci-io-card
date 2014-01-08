@@ -13,14 +13,16 @@
 int pci_init( struct pci_dev* dev, const struct pci_device_id* id )
 {
 	int ret=0;
-	u16 input=0;
+	//u16 input=0;
+	unsigned long io_base=0, io_end=0, i=0;
+
 	stdError(KERN_DEBUG, "pci_detection - FOUND");
 	//pci_bus_read_config_word();
 	// int pci_bus_read_config_word(struct pci_bus *bus, unsigned int devfn, int where, u16 *val);
-	if( pci_bus_read_config_word(dev->bus, dev->devfn, 4, &input) != 0 ){// Returns 0 on success.
+	/*if( pci_bus_read_config_word(dev->bus, dev->devfn, 4, &input) != 0 ){// Returns 0 on success.
 		stdError(KERN_WARNING, "ERROR pci_bus_read_config_word=%d", ret);
 	}// PCI_BRIDGE_RESOURCE_NUM
-	stdError(KERN_DEBUG, "u16=%hd", input);
+	stdError(KERN_DEBUG, "u16=%hd", input);*/
 
 	/*
 	// 0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100,104,108,112,116,120,124,128,132,136,140,144,148,152,156,160,164,168,172,176,180,184,188,192,196,200,204,208,212,216,220,224,228,232,236,240,244,248,252
@@ -29,8 +31,21 @@ int pci_init( struct pci_dev* dev, const struct pci_device_id* id )
 	}
 	*/
 
-	ret = pci_enable_device(dev);
-	stdError(KERN_DEBUG, "pci_enable_device=%d", ret);
+	if( (ret = pci_enable_device(dev)) != 0 ){
+		stdError(KERN_WARNING, "ERROR pci_enable_device=%d", ret);
+		return 0;
+	}
+
+	io_base = pci_resource_start(dev, PCI_BASE_ADDRESS_SPACE_IO);
+	if( !io_base ){
+		stdError(KERN_WARNING, "ERROR pci_resource_start=%lu", io_base);
+		return 0;
+	}
+	io_end = pci_resource_end(dev, PCI_BASE_ADDRESS_SPACE_IO);
+
+	stdError(KERN_DEBUG, "SpaceIO begin: %lu, end:%lu, totalSpace: %lu", io_base, io_end, io_end-io_base);
+	for( i=io_base; i<io_end; ++i )
+		outb(0xff, i);
 	return 0;
 }
 

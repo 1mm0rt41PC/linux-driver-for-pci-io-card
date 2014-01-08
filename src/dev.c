@@ -12,9 +12,6 @@ ssize_t writeDev( struct file* file, const char* buf, size_t count, loff_t* ppos
 {
 	int i=0;
 	int spacePos = -1;
-	u8 val1 = 1;
-	//u16 val2 = 1;
-	//u32 val3 = 1;
 
 	if( !count ){
 		stdError(KERN_DEBUG, "write(): Empty write => Correct usage: echo '<id Card> <value>' > /dev/PCI_IO_GOD");
@@ -32,7 +29,7 @@ ssize_t writeDev( struct file* file, const char* buf, size_t count, loff_t* ppos
 
 	for( i=0x1800; i<=0x18ff; i++ )
 	{
-		outb(val1, i);
+		outb(0, i);
 		//msleep(1000);
 		//outw(val2, i);
 		//msleep(1000);
