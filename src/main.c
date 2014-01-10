@@ -75,6 +75,7 @@ static int __init entryPoint(void)
 	//__pci_register_driver(pci_dr_strct, THIS_MODULE, DEV_NAME);
 	if( (ret=pci_register_driver(&pci_dr_strct)) != 0 ){//Returns a negative value on error, otherwise 0
 		stdError(KERN_DEBUG, "pci_register_driver ERROR %d", ret);
+		return ret;
 	}
 
 	return 0;

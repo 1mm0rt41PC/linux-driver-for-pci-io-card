@@ -33,13 +33,13 @@ int pci_init( struct pci_dev* dev, const struct pci_device_id* id )
 
 	if( (ret = pci_enable_device(dev)) != 0 ){
 		stdError(KERN_WARNING, "ERROR pci_enable_device=%d", ret);
-		return 0;
+		return ret;
 	}
 
 	io_base = pci_resource_start(dev, PCI_BASE_ADDRESS_SPACE_IO);
 	if( !io_base ){
 		stdError(KERN_WARNING, "ERROR pci_resource_start=%lu", io_base);
-		return 0;
+		return -1;
 	}
 	io_end = pci_resource_end(dev, PCI_BASE_ADDRESS_SPACE_IO);
 

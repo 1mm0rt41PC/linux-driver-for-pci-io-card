@@ -22,3 +22,11 @@ Perif activé ?
 
 Note importante !
 	pci_module_init a été remplacé par pci_register_driver
+
+
+
+"%04x:%02x:%02x.%01x"%(domain, bus, slot, func)
+$ lspci
+05:04.0 DPIO module: Adlink Technology PCI-7250 (rev 02)
+05:08.0 Ethernet controller: Intel Corporation 82801DB PRO/100 VM (LOM) Ethernet Controller (rev 81)
+05:09.0 DPIO module: Adlink Technology PCI-7250 (rev 02)
