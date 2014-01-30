@@ -63,7 +63,12 @@ Start the module::
 	
 	$ make in
 
-After a new device will be aviable at ``/dev/PCI_IO_GOD``
+After a new device will be aviable at ``/dev/PCI_IO_GOD``::
+
+We will soon be able to send a value to the card::
+
+	$ echo '0 255' > /dev/PCI_IO_GOD
+	# We send the value 255 (enable all output) to the card n°0
 
 
 |
