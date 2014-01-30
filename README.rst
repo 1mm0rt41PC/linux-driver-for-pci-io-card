@@ -10,11 +10,10 @@ README
 
 |
 
-===================================================== =
-Warning   
-===================================================== =
-This code is not finished and is currently unstable.
-===================================================== =
+.. csv-table::
+   :header: "Warning"
+
+   "This code is not finished and is currently unstable."
 
 |
 
