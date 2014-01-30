@@ -8,14 +8,16 @@ README
 :Revision: $Revision: 0.1 $
 :Description: Linux driver for the io card: PCI-7250
 
-|
 
-.. csv-table::
-   :header: "Warning"
+::
 
-   "This code is not finished and is currently unstable."
+	======================================================
+	= Warning =
+	===========
+	This code is not finished and is currently unstable.
+	======================================================
 
-|
+
 
 **Screenshot**
 --------------
