@@ -5,3 +5,4 @@
 *.mod.c
 *.cmd
 *.user
+.tmp_versions

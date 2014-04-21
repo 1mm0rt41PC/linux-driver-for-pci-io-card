@@ -52,7 +52,12 @@ int closeDev( struct inode* inode, struct file* file )
 	stdError(KERN_DEBUG, "close()");
 	return 0;
 }
-
+/*
+int readdirDev( struct file* file, void* dirent, filldir_t filldir )
+{
+	return 0;
+}
+*/
 
 /***************************************************************************//*!
 * @brief Permet d'affecter des fonctions à: read, write, ...
@@ -63,5 +68,6 @@ struct file_operations fops =
 	.read		= readDev,
 	.write		= writeDev,
 	.open		= openDev,
-	.release	= closeDev// correspond a close
+	.release	= closeDev,// correspond a close
+	//.readdir	= readdirDev
 };
