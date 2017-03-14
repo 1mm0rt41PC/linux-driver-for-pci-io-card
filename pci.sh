@@ -76,4 +76,4 @@ function pci_restart()
 [ "$1" = "stop" ] && pci_stop;
 [ "$1" = "restart" ] && pci_restart;
 [ "$1" = "test" ] && pci_test;
-[ "$1" = "install" ] && make clean && make && make install
+[ "$1" = "install" ] && make clean && make && sudo make install
