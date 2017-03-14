@@ -4,8 +4,8 @@ README
 
 :Info: See <https://bitbucket.org/ImmortalPC/linux-driver-for-pci-io-card> for repo.
 :Author: NUEL Guillaume (ImmortalPC)
-:Date: $Date: 2014-01-19 $
-:Revision: $Revision: 0.1 $
+:Date: $Date: 2017-03-14 $
+:Revision: $Revision: 1.0 $
 :Description: Linux driver for the io card: PCI-7250
 
 
@@ -14,7 +14,7 @@ README
 	======================================================
 	= Warning =
 	===========
-	This code is not finished and is currently unstable.
+	This code is finished and is currently stable.
 	======================================================
 
 
@@ -35,14 +35,33 @@ This is a linux diver for the io card: PCI-7250. It work's with all kernels >= 3
 
 |
 
-**Code** **Format** **and** **Standards**
------------------------------------------
-- The code is in UTF-8 
-- The code is indented with real tabs (\\t) 
-- The code is intended to be displayed with a size of 4 for the tab (\\t) 
-- The line endings type LF (\\n) 
-- IDE used: QtCreator 
-- Comments are in doxygen format.
+**Usage**
+---------------
+Build::
+	
+	$ chmod +x ./pci.sh
+	$ ./pci.sh install
+	$ ./pci.sh start
+	$ ./pci.sh test
+
+After a new device will be aviable at ``/dev/PCI_IO`` and ``/dev/PIO/...``::
+	
+Basic usage::
+
+	root@home:~$ cat > /dev/PIO/card_1
+	255
+	^D
+	root@home:~$ cat /dev/PIO/card_1
+	255
+	# Or
+	root@home:~$ cat /dev/PIO/1234 <<<<< Card address
+	255
+	
+Basic usage with python::
+	
+	with open('/dev/PIO/card_1', 'rb+') as fp:
+		fp.write('255');
+		print(str(fp.read(2)));
 
 |
 
@@ -53,29 +72,20 @@ This is a linux diver for the io card: PCI-7250. It work's with all kernels >= 3
 
 |
 
-**Usage**
----------
-Build::
-
-	$ make
-
-Start the module::
-	
-	$ make in
-
-After a new device will be aviable at ``/dev/PCI_IO_GOD``::
-
-We will soon be able to send a value to the card::
-
-	$ echo '0 255' > /dev/PCI_IO_GOD
-	# We send the value 255 (enable all output) to the card n°0
-
-
-|
-
 **Documentation**
 -----------------
 For more information see the documentation in the directory **/doc/**
+
+|
+
+**Code** **Format** **and** **Standards**
+-----------------------------------------
+- The code is in UTF-8 
+- The code is indented with real tabs (\\t) 
+- The code is intended to be displayed with a size of 4 for the tab (\\t) 
+- The line endings type LF (\\n) 
+- IDE used: QtCreator 
+- Comments are in doxygen format.
 
 |
 
