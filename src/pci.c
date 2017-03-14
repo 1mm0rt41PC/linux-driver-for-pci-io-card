@@ -18,19 +18,6 @@ int pci_init( struct pci_dev* dev, const struct pci_device_id* id )
 	int i=0;
 
 	stdError(KERN_DEBUG, "pci_detection - FOUND");
-	//pci_bus_read_config_word();
-	// int pci_bus_read_config_word(struct pci_bus *bus, unsigned int devfn, int where, u16 *val);
-	/*if( pci_bus_read_config_word(dev->bus, dev->devfn, 4, &input) != 0 ){// Returns 0 on success.
-		stdError(KERN_WARNING, "ERROR pci_bus_read_config_word=%d", ret);
-	}// PCI_BRIDGE_RESOURCE_NUM
-	stdError(KERN_DEBUG, "u16=%hd", input);*/
-
-	/*
-	// 0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100,104,108,112,116,120,124,128,132,136,140,144,148,152,156,160,164,168,172,176,180,184,188,192,196,200,204,208,212,216,220,224,228,232,236,240,244,248,252
-	if( (ret=pci_bus_write_config_dword(dev->bus, dev->devfn, 252, -1)) != 0 ){
-		stdError(KERN_WARNING, "ERROR pci_bus_write_config_dword=%d", ret);
-	}
-	*/
 
 	if( (ret = pci_enable_device(dev)) != 0 ){
 		stdError(KERN_WARNING, "ERROR pci_enable_device=%d", ret);
@@ -48,7 +35,6 @@ int pci_init( struct pci_dev* dev, const struct pci_device_id* id )
 	
 	stdError(KERN_DEBUG, DEV_NAME " CARD @: %lu", (long unsigned int)pci_resource_start(dev, 2));
 	
-
 	return 0;
 }
 
@@ -64,7 +50,6 @@ void pci_remove( struct pci_dev* dev )
 	pci_disable_device(dev);
 	stdError(KERN_DEBUG, "pci_remove - FOUND");
 }
-
 
 
 

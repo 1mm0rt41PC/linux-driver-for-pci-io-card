@@ -3,7 +3,6 @@
 #include <linux/cdev.h>
 #include "dev.h"// Tout pour gérer le lien /dev/PCI_IO
 #include "pci.h"// Tout pour gérer la liaison PCI
-#include "proc.h"// Tout pour gérer le lien /proc/pci7250-x
 
 MODULE_AUTHOR("Immortal-PC");
 MODULE_DESCRIPTION("PCI-IO interact with PCI card");
@@ -89,9 +88,6 @@ static int __init entryPoint(void)
 		return __LINE__;
 	}
 
-	//stdError(KERN_DEBUG, "Init - init_procfs");
-	//if( init_procfs() != 0 )
-	//	return __LINE__;
 
 	//__pci_register_driver(pci_dr_strct, THIS_MODULE, DEV_NAME);
 	stdError(KERN_DEBUG, "Init - pci_register_driver");
@@ -113,7 +109,6 @@ static void __exit exitPoint(void)
 {
 	stdError(KERN_DEBUG, "Trying to quit " DEV_NAME);
 	pci_unregister_driver(&pci_dr_strct);
-	//cleanup_procfs();
 	cdev_del(&c_dev);
 	device_destroy(&my_class, first);
 	class_unregister(&my_class);
