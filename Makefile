@@ -1,48 +1,39 @@
 # Doc: https://www.kernel.org/doc/Documentation/kbuild/modules.txt
 
-NAME_internal = PCI_IO_GOD
+NAME_internal = PCI_IO
 # Voir /proc/devices
 MAJOR_internal = 2544
 
 
-obj-m += PCI_IO_GOD.o
-PCI_IO_GOD-objs := ./src/main.o ./src/dev.o ./src/pci.o ./src/proc.o
+obj-m += PCI_IO.o
+PCI_IO-objs := ./src/main.o ./src/dev.o ./src/pci.o ./src/proc.o ./src/extra.o
 
 default:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
+	make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd) modules
 
 clean:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
-
-
-in:
-	insmod ./PCI_IO_GOD.ko
-#	b      create a block (buffered) special file
-#	c, u   create a character (unbuffered) special file
-#	p      create a FIFO
-#	mknod /dev/$(NAME_internal) c $(MAJOR_internal) 0
+	make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd) clean
 
 
 out: rm
 rm:
-	rmmod PCI_IO_GOD.ko
-#	rm /dev/PCI_IO_GOD
+	rmmod PCI_IO.ko
+	rm -rf /dev/PIO/ 2>/dev/null
+	rm /etc/udev/rules.d/80-PCI_IO.rules
+#	rm /dev/PCI_IO
 
 
 sh: show
 show:
 	dmesg | tail
 
-
 test:
-	python -c 'fp=open("/dev/PCI_IO_GOD", "w"); fp.write("123 456"); fp.close();'
-	dmesg | tail
+	VALUE=255 CARD_1_OUT=7232 python -c 'import os; fp=open("/dev/PIO/"+os.environ["CARD_1_OUT"], "w"); fp.write(os.environ["VALUE"]); fp.close();'
+	CARD_1_OUT=7232 python -c 'import os; print(ord(list(open("/dev/PIO/"+str(int(os.environ["CARD_1_OUT"])+2), "r").read(2))[0]));'
+	#python -c 'import sys,os; [open("/dev/PIO/"+str(i), "w").write("255") for i in xrange(5300,5400)]'
 
 
-led:
-	./led.py
-
-
+	
 dr:
 	cd /home/maison/Bureau/PCI-7250-GPIO/pci-dask_427/drivers/ && ./dask_inst.pl
 
@@ -52,4 +43,4 @@ drrm:
 
 
 install:
-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules_install
+	make -C /lib/modules/$$(uname -r)/build M=$(shell pwd) modules_install

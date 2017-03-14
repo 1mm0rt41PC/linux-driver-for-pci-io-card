@@ -14,7 +14,8 @@ int pci_init( struct pci_dev* dev, const struct pci_device_id* id )
 {
 	int ret=0;
 	//u16 input=0;
-	unsigned long io_base=0, io_end=0, i=0;
+	unsigned long io_base=0, io_end=0, io_flags=0, io_len=0;
+	int i=0;
 
 	stdError(KERN_DEBUG, "pci_detection - FOUND");
 	//pci_bus_read_config_word();
@@ -36,16 +37,18 @@ int pci_init( struct pci_dev* dev, const struct pci_device_id* id )
 		return ret;
 	}
 
-	io_base = pci_resource_start(dev, PCI_BASE_ADDRESS_SPACE_IO);
-	if( !io_base ){
-		stdError(KERN_WARNING, "ERROR pci_resource_start=%lu", io_base);
-		return -1;
+	for(i=0;i<=6;++i)
+	{
+		io_base = pci_resource_start(dev, i);// (doc) i=PCI_BASE_ADDRESS_SPACE_IO
+		io_end = pci_resource_end(dev, i);
+		io_flags = pci_resource_flags(dev, i);
+		io_len = pci_resource_len(dev, i);
+		stdError(KERN_DEBUG, "pci_resource_start(%d)=%lu, end=%lu, flags=%lu, len=%lu", i, io_base, io_end, io_flags, io_len);
 	}
-	io_end = pci_resource_end(dev, PCI_BASE_ADDRESS_SPACE_IO);
+	
+	stdError(KERN_DEBUG, DEV_NAME " CARD @: %lu", (long unsigned int)pci_resource_start(dev, 2));
+	
 
-	stdError(KERN_DEBUG, "SpaceIO begin: %lu, end:%lu, totalSpace: %lu", io_base, io_end, io_end-io_base);
-	for( i=io_base; i<io_end; ++i )
-		outb(0xff, i);
 	return 0;
 }
 
