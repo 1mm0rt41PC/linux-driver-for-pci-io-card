@@ -44,7 +44,7 @@ Build::
 	$ ./pci.sh start
 	$ ./pci.sh test
 
-After a new device will be aviable at ``/dev/PCI_IO`` and ``/dev/PIO/...``::
+After a new device will be aviable at ``/dev/PCI_IO`` and at ``/dev/PIO/...``::
 	
 Basic usage::
 
