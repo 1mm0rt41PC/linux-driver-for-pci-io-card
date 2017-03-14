@@ -6,7 +6,7 @@ MAJOR_internal = 2544
 
 
 obj-m += PCI_IO.o
-PCI_IO-objs := ./src/main.o ./src/dev.o ./src/pci.o ./src/proc.o ./src/extra.o
+PCI_IO-objs := ./src/main.o ./src/dev.o ./src/pci.o ./src/extra.o
 
 default:
 	make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd) modules
