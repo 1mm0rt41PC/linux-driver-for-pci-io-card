@@ -6,7 +6,6 @@
 
 MODULE_AUTHOR("Immortal-PC");
 MODULE_DESCRIPTION("PCI-IO interact with PCI card");
-MODULE_SUPPORTED_DEVICE("none");
 MODULE_LICENSE("GPL");
 
 int my_dev_uevent( struct device *dev, struct kobj_uevent_env *env );

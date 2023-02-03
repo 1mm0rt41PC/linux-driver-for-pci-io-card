@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cd `dirname "$0"`
 
 function pci_stop()
 {
@@ -13,13 +13,14 @@ function pci_stop()
 function pci_start()
 {
 	echo 'Start...'
+	[ -z "$USERNAME" ] && export USERNAME="$USER"
 	# Pour les rules udev, voir http://www.reactivated.net/writing_udev_rules.html#basic
 	echo 'KERNEL=="PCI_IO", MODE="0660", OWNER="root", GROUP="'$USERNAME'"' | sudo tee /etc/udev/rules.d/80-PCI_IO.rules
 	sudo rm -rf /dev/PIO/ 2>/dev/null
-	dmesg -C
+	sudo dmesg -C
 	sudo insmod ./PCI_IO.ko
 	sudo mkdir /dev/PIO/
-	dmesg | grep -F 'PCI_IO CARD @:' | awk -F '@: ' '{print $2}' | while read -r line; do
+	sudo dmesg | grep -F 'PCI_IO CARD @:' | awk -F '@: ' '{print $2}' | while read -r line; do
 		export line=$line
 		sudo ln /dev/PCI_IO /dev/PIO/$line
 		sudo ln /dev/PCI_IO /dev/PIO/`expr $line + 1`
@@ -30,6 +31,7 @@ function pci_start()
 #	p      create a FIFO
 #	mknod /dev/$(NAME_internal) c $(MAJOR_internal) 0
 	done
+	sudo chown root:$USERNAME -R /dev/PIO/
 	echo "`ls -l /dev/PIO/card_w* |wc -l` card found"
 	ls -alFpih --color=auto /dev/PIO/
 }
