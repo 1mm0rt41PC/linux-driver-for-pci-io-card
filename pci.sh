@@ -52,17 +52,16 @@ function pci_test()
 	
 	echo 'Test2...'
 	sleep 1
-	cat <<'EOD' | python
+	cat <<'EOD' | python3
 from random import random;
 from time import sleep;
-fp=open('/dev/PIO/card_1','w');
-fp2=open('/dev/PIO/card_2','w');
+from glob import glob
+handle = [ open(p,'w') for p in glob('/dev/PIO/card_*') ]
 while 1:
-	fp.write(str(int(random()*1000)%255));
-	fp.flush();
-	fp2.write(str(int(random()*1000)%255));
-	fp2.flush();
-	sleep(0.25);
+    for h in handle:
+        h.write(str(int(random()*1000)%255));
+        h.flush();
+    sleep(0.25);
 EOD
 }
 
