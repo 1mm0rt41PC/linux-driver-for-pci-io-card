@@ -55,14 +55,25 @@ function pci_test()
 	cat <<'EOD' | python3
 from random import random;
 from time import sleep;
+<<<<<<< Updated upstream
+=======
+from requests import get
+>>>>>>> Stashed changes
 from glob import glob
 handle = [ open(p,'w') for p in glob('/dev/PIO/card_*') ]
 while 1:
     for h in handle:
         h.write(str(int(random()*1000)%255));
         h.flush();
+<<<<<<< Updated upstream
+=======
+    get(f'http://192.168.2.100/current_state.xml?pw=admin&Relay1={int(random()*1000)%2}&Relay2={int(random()*1000)%2}&Relay3={int(random()*1000)%2}')
+    get(f'http://192.168.2.100/current_state.xml?pw=admin&Relay4={int(random()*1000)%2}&Relay5={int(random()*1000)%2}&Relay6={int(random()*1000)%2}')
+    get(f'http://192.168.2.100/current_state.xml?pw=admin&Relay7={int(random()*1000)%2}&Relay8={int(random()*1000)%2}')
+>>>>>>> Stashed changes
     sleep(0.25);
 EOD
+
 }
 
 
